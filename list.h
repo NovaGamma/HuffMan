@@ -7,3 +7,4 @@ typedef struct Element{
 
 Element* createElement(char letter);
 void addElement(Element** list, Element* element);
+void displayList(Element* list);
