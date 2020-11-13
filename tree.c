@@ -17,8 +17,14 @@ Tree createHuffmanNode(Tree min, Tree min2){
   Tree node = (Node*)malloc(sizeof(Node));
   node->occurence = min->occurence + min2->occurence;
   node->letter = '\0';
-  node->left = min;
-  node->right = min2;
+  if(min->letter == min2->letter && getDepth(min) > getDepth(min2)){
+    node->left = min2;
+    node->right = min;
+  }
+  else{
+    node->left = min;
+    node->right = min2;
+  }
   return node;
 }
 
@@ -65,16 +71,29 @@ int getWeight(Tree tree){
 }
 
 int getDepth(Tree tree){
-  if (tree != NULL){
-    return 1 + getDepth(tree->left) + getDepth(tree->right);
+  if (tree == NULL){
+    return 0;
   }
-  return 0;
+  else{
+    int dl = getDepth(tree->left);
+    int dr = getDepth(tree->right);
+    if (dl > dr){
+      return dl + 1;
+    }
+    else{
+      return dr + 1;
+    }
+  }
 }
+
 
 void add2TreeList(Tree* tree,Tree node){
   if ((*tree) != NULL){
     Tree temp = (*tree);
     (*tree) = node;
     node->next = temp;
+  }
+  else{
+    (*tree) = node;
   }
 }

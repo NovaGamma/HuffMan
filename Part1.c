@@ -36,7 +36,7 @@ int nCharInFile(char* path){
   return number;
 }
 
-Node* getMinOccurrences(Tree list){
+Tree getMinOccurrences(Tree list){
     if(list != NULL){
       Node* temp = list;
       Node* min = list;
@@ -49,58 +49,37 @@ Node* getMinOccurrences(Tree list){
     return min;
     }
 }
-/*
+
 void removeFromTreeList(Tree* list, Tree node){
   Tree temp = *list;
   Node* prev = temp;
-  if (temp->occurence == node->occurence && temp->left == node->left && temp->right == node->right){
+  if (temp->occurence == node->occurence && temp->left == node->left && temp->right == node->right && temp->letter == node->letter){
     (*list) = temp->next;
-    free(temp);
   }
   while (temp != NULL){
-    if(temp->occurence == node->occurence && temp->left == node->left && temp->right == node->right){
+    if(temp->occurence == node->occurence && temp->left == node->left && temp->right == node->right && temp->letter == node->letter){
       prev->next = temp->next;
-      free(temp);
-      return node;
     }
     prev = temp;
     temp = temp->next;
   }
-}*/
-
-void removeFromTreeList(Tree* list, Tree node){
-    if(*list != NULL && (*list)->next != NULL){
-        if((*list)->next->occurence == node->occurence && (*list)->next->left == node->left && (*list)->next->right == node->right){
-            Tree temp = (*list)->next;
-            (*list)->next = (*list)->next->next;
-            free(temp);
-        }
-        else{
-            removeFromTreeList(&(*list)->next, node);
-        }
-    }
-    else if(*list != NULL && (*list)->occurence == node->occurence && (*list)->left == node->left && (*list)->right == node->right){
-        free(*list);
-        *list = NULL;
-    }
 }
 
-Tree createHuffman(Tree occurence){
-  while (nElement(occurence) > 1){
-    displayList(occurence);
+void createHuffman(Tree* occurence){
+  while (nElement(*occurence) > 1){
+    displayList(*occurence);
     printf("\n");
-    Tree min = getMinOccurrences(occurence);//sending the address of the tree because the min will be removed
-    removeFromTreeList(&occurence,min);
-    Tree min2 = getMinOccurrences(occurence);
-    removeFromTreeList(&occurence,min2);
-    displayList(occurence);
+    Tree min = getMinOccurrences(*occurence);//sending the address of the tree because the min will be removed
+    removeFromTreeList(occurence,min);
+    Tree min2 = getMinOccurrences(*occurence);
+    removeFromTreeList(occurence,min2);
+    displayList(*occurence);
     printf("\n");
     printf("%d\n",min->occurence + min2->occurence);
     Tree huffman = createHuffmanNode(min,min2);
     printf("occ %d\n",huffman->occurence);
-    add2TreeList(&occurence,huffman);
+    add2TreeList(occurence,huffman);
   }
-  return occurence;//the only element left is the huffman tree
 }
 
 Node* letterOccurrences(char* path){
@@ -112,7 +91,7 @@ Node* letterOccurrences(char* path){
   Node* temp;
   int added;
   while (buffer != EOF){
-    printf("%c",buffer);
+    //printf("%c",buffer);
     temp = list;
     added = 0;
     do{
@@ -134,19 +113,89 @@ Node* letterOccurrences(char* path){
   return list;
 }
 
+void text2compressedFile(){
+    FILE *input;
+    FILE *output;
+    FILE * dic;
+    input = fopen("input.txt","r");
+    output = fopen("output.txt","w");
+    dic = fopen("dico.txt", "r");
+    char bufferIn = fgetc(input);
+    char bufferDic = fgetc(dic);
+    while (bufferIn != EOF){
+        if (bufferIn == '\n' || bufferIn == ' '){
+            while (bufferDic != ':'){        //To verify if it's actually the term we're looking at and not a random space or return
+                while (bufferDic != bufferIn){
+                    bufferDic = fgetc(dic);
+                }
+                fseek(dic, 1, SEEK_CUR);
+                bufferDic = fgetc(dic);
+            }
+            fseek(dic, 1, SEEK_CUR);
+        }
+        else {
+            while (bufferDic != bufferIn){
+                bufferDic = fgetc(dic);
+            }
+            fseek(dic, 3, SEEK_CUR);
+        }
+        bufferDic = fgetc(dic);
+        while (bufferDic != '\n'){
+            fprintf(output, "%c", bufferDic);
+            bufferDic = fgetc(dic);
+        }
+        fseek(dic, 0, SEEK_SET);
+        bufferDic = fgetc(dic);
+        bufferIn = fgetc(input);
+    }
+    fclose(input);
+    fclose(output);
+    fclose(dic);
+}
 
+void get_path(Tree tree, char isRightChild, char *path, int path_length){
 
+    if (tree != NULL )
+    {
+        if (isRightChild != 2)   //it would mean we're at the root
+            *(path + path_length - 1) = isRightChild; //is this node at the left or right of the previous one? //-1 since we didn'tree take the root
+
+        if (tree->right == NULL && tree->left == NULL) //if leaf
+        {
+            FILE* dico = fopen("dico.txt","a+"); //adding at the end of the file
+            fprintf(dico,"%c%s", tree->letter,path);
+            printf("%c%s", tree->letter,path);  //(just to check)
+            *path = '\0';  //reinitializing path
+            fclose(dico);
+        }
+
+        else {
+            get_path(tree->left, 0, path, path_length + 1);
+            get_path(tree->right, 1, path, path_length + 1);
+        }
+    }
+    else
+        return NULL;
+}
+
+void createDico(Node* t)
+{
+    char path[20];
+    get_path(t,2,path,0);
+}
 
 int main(){
   text2binaryFile();
   char path[] = "input.txt";
   nCharInFile(path);
   char path2[] = "output.txt";
-  nCharInFile(path2);
-  Node* tree = letterOccurrences(path);
+  Tree tree = letterOccurrences(path);
   //displayList(tree);
   //printf("\n");
-  Tree huffman = createHuffman(tree);
-  displayHuffman(huffman);
+  createHuffman(&tree);
+  //displayHuffman(tree);
+  createDico(tree);
+  //text2compressedFile();
+  //nCharInFile(path2);
   return 0;
 }
