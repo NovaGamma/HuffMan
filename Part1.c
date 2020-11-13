@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "list.c"
 #include "tree.c"
 
 
@@ -8,7 +7,7 @@ void text2binaryFile(){
   FILE *input;
   FILE *output;
   input = fopen("input.txt","r");
-  output = fopen("output.txt","w");
+  output = fopen("binary.txt","w");
   char buffer = fgetc(input);
   while (buffer != EOF){
     //convert the char to binary and save it in the output file
@@ -22,7 +21,6 @@ void text2binaryFile(){
   }
   fclose(input);
   fclose(output);
-  FILE *output2 = fopen("output.txt","r");
 }
 
 int nCharInFile(char* path){
@@ -38,12 +36,35 @@ int nCharInFile(char* path){
   return number;
 }
 
-Element* letterOccurrences(char* path){
+Node* getMinOccurrences(Node* list){
+    if(list != NULL){
+      Node* temp = list;
+      Node* min = list;
+      while (temp != NULL){
+        if (temp->occurence < min->occurence){
+          min = temp;
+        }
+        temp = temp->left;
+      }
+      return min;
+    }
+}
+
+Tree createHuffman(Tree occurence){
+  while (getDepth(occurence) > 0){
+
+    Tree min = getMinOccurrences(occurence);
+    if(min->occurence)
+  }
+}
+
+Node* letterOccurrences(char* path){
+  //here list is a degenerate tree
   FILE *file = fopen(path,"r");
   char buffer = getc(file);
-  Element* list = createElement(buffer);
+  Node* list = createNode(buffer);
   list->occurence--;
-  Element* temp;
+  Node* temp;
   int added;
   while (buffer != EOF){
     printf("%c",buffer);
@@ -54,16 +75,17 @@ Element* letterOccurrences(char* path){
         temp->occurence++;
         added = 1;
       }
-      temp = temp->next;
-    }while(temp != NULL && added != 1 && temp->next != NULL);
+      temp = temp->left;
+    }while(temp != NULL && added != 1 && temp->left != NULL);
     if (added == 0){
-      addElement(&list,createElement(buffer));
+      add2TreeList(&list,createNode(buffer));//0 to add it at the left of the tree to create a degenerate
     }
     buffer = fgetc(file);
     /*if (buffer == EOF){
       printf("\nBonjour Antoine\n");
     }*/
   }
+  printf("\n");
   return list;
 }
 
@@ -76,7 +98,7 @@ int main(){
   nCharInFile(path);
   char path2[] = "output.txt";
   nCharInFile(path2);
-  Element* list = letterOccurrences(path);
-  displayList(list);
+  Node* tree = letterOccurrences(path);
+  displayTree(tree);
   return 0;
 }
