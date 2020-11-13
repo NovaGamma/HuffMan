@@ -13,3 +13,4 @@ void displayTree(Tree tree);
 void add2TreeList(Tree* tree,Tree node);
 int getWeight(Tree tree);
 int getDepth(Tree tree);
+Tree createHuffmanNode(Tree min, Tree min2);

@@ -9,6 +9,16 @@ Tree createNode(char letter){
   node->occurence = 1;
   node->left = NULL;
   node->right = NULL;
+  node->next = NULL;
+  return node;
+}
+
+Tree createHuffmanNode(Tree min, Tree min2){
+  Tree node = (Node*)malloc(sizeof(Node));
+  node->occurence = min->occurence + min2->occurence;
+  node->letter = '\0';
+  node->left = min;
+  node->right = min2;
   return node;
 }
 
@@ -18,6 +28,34 @@ void displayTree(Tree tree){//display in postfix order
     displayTree(tree->right);
     printf("%c %d\n",tree->letter,tree->occurence);
   }
+}
+
+void displayList(Tree tree){
+  if(tree != NULL){
+    if(tree->letter == '\0'){
+      printf("0_%d->",tree->occurence);
+    }
+    else{
+    printf("%c_%d->",tree->letter,tree->occurence);
+    }
+    displayList(tree->next);
+  }
+}
+
+void displayHuffman(Tree tree){
+  if (tree != NULL){
+    if(tree->letter != '\0')
+      printf("%d\n",tree->occurence);
+      displayHuffman(tree->left);
+      displayHuffman(tree->right);
+  }
+}
+
+int nElement(Tree tree){
+  if(tree != NULL){
+    return 1 + nElement(tree->next);
+  }
+  return 0;
 }
 
 int getWeight(Tree tree){
@@ -37,29 +75,6 @@ void add2TreeList(Tree* tree,Tree node){
   if ((*tree) != NULL){
     Tree temp = (*tree);
     (*tree) = node;
-    node->left = temp;
-  }
-}
-
-void removeFromTreeList(Tree* tree,char letter){
-  if ((*tree) != NULL){
-    if((*tree)->letter == letter){
-      Tree temp = (*tree);
-      (*tree) = (*tree)->left;//here since tree is a degenerate we know that there is nothing on the right child
-      free(temp);
-    }
-    else{
-      while((*tree)->left->letter != letter){
-        (*tree) = (*tree)->left;
-      }
-      Tree temp = (*tree)->left;
-      free(temp);
-      if ((*tree)->left->left != NULL){
-        (*tree)->left = (*tree)->left->left;
-      }
-      else{
-        (*tree)->left = NULL;
-      }
-    }
+    node->next = temp;
   }
 }

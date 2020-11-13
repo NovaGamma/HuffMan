@@ -36,26 +36,71 @@ int nCharInFile(char* path){
   return number;
 }
 
-Node* getMinOccurrences(Node* list){
+Node* getMinOccurrences(Tree list){
     if(list != NULL){
       Node* temp = list;
       Node* min = list;
       while (temp != NULL){
-        if (temp->occurence < min->occurence){
+        if (temp->occurence <= min->occurence){
           min = temp;
         }
-        temp = temp->left;
+        temp = temp->next;
       }
-      return min;
+    return min;
+    }
+}
+/*
+void removeFromTreeList(Tree* list, Tree node){
+  Tree temp = *list;
+  Node* prev = temp;
+  if (temp->occurence == node->occurence && temp->left == node->left && temp->right == node->right){
+    (*list) = temp->next;
+    free(temp);
+  }
+  while (temp != NULL){
+    if(temp->occurence == node->occurence && temp->left == node->left && temp->right == node->right){
+      prev->next = temp->next;
+      free(temp);
+      return node;
+    }
+    prev = temp;
+    temp = temp->next;
+  }
+}*/
+
+void removeFromTreeList(Tree* list, Tree node){
+    if(*list != NULL && (*list)->next != NULL){
+        if((*list)->next->occurence == node->occurence && (*list)->next->left == node->left && (*list)->next->right == node->right){
+            Tree temp = (*list)->next;
+            (*list)->next = (*list)->next->next;
+            free(temp);
+        }
+        else{
+            removeFromTreeList(&(*list)->next, node);
+        }
+    }
+    else if(*list != NULL && (*list)->occurence == node->occurence && (*list)->left == node->left && (*list)->right == node->right){
+        free(*list);
+        *list = NULL;
     }
 }
 
 Tree createHuffman(Tree occurence){
-  while (getDepth(occurence) > 0){
-
-    Tree min = getMinOccurrences(occurence);
-    if(min->occurence)
+  while (nElement(occurence) > 1){
+    displayList(occurence);
+    printf("\n");
+    Tree min = getMinOccurrences(occurence);//sending the address of the tree because the min will be removed
+    removeFromTreeList(&occurence,min);
+    Tree min2 = getMinOccurrences(occurence);
+    removeFromTreeList(&occurence,min2);
+    displayList(occurence);
+    printf("\n");
+    printf("%d\n",min->occurence + min2->occurence);
+    Tree huffman = createHuffmanNode(min,min2);
+    printf("occ %d\n",huffman->occurence);
+    add2TreeList(&occurence,huffman);
   }
+  return occurence;//the only element left is the huffman tree
 }
 
 Node* letterOccurrences(char* path){
@@ -75,8 +120,8 @@ Node* letterOccurrences(char* path){
         temp->occurence++;
         added = 1;
       }
-      temp = temp->left;
-    }while(temp != NULL && added != 1 && temp->left != NULL);
+      temp = temp->next;
+    }while(temp != NULL && added != 1 && temp->next != NULL);
     if (added == 0){
       add2TreeList(&list,createNode(buffer));//0 to add it at the left of the tree to create a degenerate
     }
@@ -99,6 +144,9 @@ int main(){
   char path2[] = "output.txt";
   nCharInFile(path2);
   Node* tree = letterOccurrences(path);
-  displayTree(tree);
+  //displayList(tree);
+  //printf("\n");
+  Tree huffman = createHuffman(tree);
+  displayHuffman(huffman);
   return 0;
 }
