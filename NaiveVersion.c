@@ -67,17 +67,11 @@ void removeFromTreeList(Tree* list, Tree node){
 
 void createHuffman(Tree* occurence){
   while (nElement(*occurence) > 1){
-    displayList(*occurence);
-    printf("\n");
     Tree min = getMinOccurrences(*occurence);//sending the address of the tree because the min will be removed
     removeFromTreeList(occurence,min);
     Tree min2 = getMinOccurrences(*occurence);
     removeFromTreeList(occurence,min2);
-    displayList(*occurence);
-    printf("\n");
-    printf("%d\n",min->occurence + min2->occurence);
     Tree huffman = createHuffmanNode(min,min2);
-    printf("occ %d\n",huffman->occurence);
     add2TreeList(occurence,huffman);
   }
 }
@@ -167,7 +161,7 @@ void get_path(Tree tree, char* isRightChild, char* path, int path_length){
         {
             FILE* dico = fopen("dico.txt","a+"); //adding at the end of the file
             fprintf(dico,"%c : %s\n", tree->letter,path);
-            printf("%c%s\n", tree->letter,path);  //(just to check)
+            //printf("%c%s\n", tree->letter,path);  //(just to check)
             fclose(dico);
             free(path);
         }
@@ -201,6 +195,7 @@ int main(){
   //displayHuffman(tree);
   createDico(tree);
   text2compressedFile();
+  nCharInFile("binary.txt");
   nCharInFile(path2);
   return 0;
 }
