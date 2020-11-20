@@ -76,35 +76,101 @@ void createHuffman(Tree* occurence){
   }
 }
 
-Node* letterOccurrences(char* path){
+void display(Node** array,int length){
+  for(int i = 0;i<length;i++){
+    printf("%c %d / ",array[i]->letter,array[i]->occurence);
+  }
+  printf("\n");
+}
+
+Node** insert(Node** array,int length,char letter,int pos){
+  Node** inserted = (Node**)malloc(sizeof(Node*)*(length+1));
+  Node* NodeLetter = createNode(letter);
+  int i;
+  if (pos != 0){
+    for(i = 0; i < pos;i++){
+      inserted[i] = array[i];
+    }
+    inserted[pos] = NodeLetter;
+  }
+  else{
+    inserted[0] = NodeLetter;
+  }
+  for (i = pos+1;i<length+1;i++){
+    inserted[i] = array[i-1];
+  }
+  return inserted;
+}
+
+Node** letterOccurrences(char* path){
   //here list is a degenerate tree
   FILE *file = fopen(path,"r");
-  char buffer = getc(file);
-  Node* list = createNode(buffer);
-  list->occurence--;
-  Node* temp;
-  int added;
-  while (buffer != EOF){
-    //printf("%c",buffer);
-    temp = list;
-    added = 0;
-    do{
-      if (buffer == temp->letter){
-        temp->occurence++;
-        added = 1;
-      }
-      temp = temp->next;
-    }while(temp != NULL && added != 1 && temp->next != NULL);
-    if (added == 0){
-      add2TreeList(&list,createNode(buffer));//0 to add it at the left of the tree to create a degenerate
+  char letter = getc(file);
+  Node* node = createNode(letter);
+  Node** array = (Node**)malloc(sizeof(Node*));
+  array[0] = node;
+  array[0]->occurence--;
+  int length = 1;
+  while (letter != EOF){
+    printf("%c %d\n",letter,letter);
+    int right = length-1;
+    int left = 0;
+    int pos;
+    char temp;
+    int added = 0;
+    int before = -1;
+    while (added == 0){
+        pos = (left + right)/2;
+        temp = array[pos]->letter;
+        if (temp == letter){
+          printf("add occurence odd\n");
+          array[pos]->occurence++;
+          added = 1;
+          pos = -1;
+        }
+        else if (temp > letter){//we go to the left
+            if (pos == 0){
+              added = -1;
+            }
+            else if(array[pos-1]->letter < letter){
+              added = -1;
+            }
+            else if (pos == before){
+              added = -1;
+              pos--;
+            }
+            else{
+                before = pos;
+                right = pos - 1;
+              }
+          }
+        else if(temp < letter){ // we go to the right
+            if (pos == length-1){
+              pos++;
+              added = -1;
+            }
+            else if(array[pos+1]->letter > letter){
+              added = -1;
+              pos++;
+            }
+            else{
+                left = pos + 1;
+              }
+          }
     }
-    buffer = fgetc(file);
+    if (pos != -1){
+        printf("Add node for letter : %c at pos : %d\n",letter,pos);
+        array = insert(array,length,letter,pos);
+        length++;
+    }
+    display(array,length);
+    letter = fgetc(file);
     /*if (buffer == EOF){
       printf("\nBonjour Antoine\n");
     }*/
   }
   printf("\n");
-  return list;
+  return array;
 }
 
 void text2compressedFile(){
@@ -188,14 +254,14 @@ int main(){
   char path[] = "input.txt";
   nCharInFile(path);
   char path2[] = "output.txt";
-  Tree tree = letterOccurrences(path);
+  Node** tree = letterOccurrences(path);
   //displayList(tree);
   //printf("\n");
-  createHuffman(&tree);
+  /*createHuffman(&tree);
   //displayHuffman(tree);
   createDico(tree);
   text2compressedFile();
   nCharInFile("binary.txt");
-  nCharInFile(path2);
+  nCharInFile(path2);*/
   return 0;
 }
