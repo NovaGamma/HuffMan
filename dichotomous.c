@@ -7,13 +7,15 @@ temp = array[pos]
 added = 0
 before = -1
 
-while added == 0:
-    if length%2 == 0:
-        if array[pos] == letter or array[pos-1] == letter:
-            added = 1
-    elif temp == letter:
-        print("add occurence")
-        added = 1
+while (added == 0){
+    if (length%2 == 0){
+        if (array[pos] == letter || array[pos-1] == letter)
+            added = 1;
+    }
+    elif (temp == letter){
+        print("add occurence");
+        added = 1;
+      }
     elif temp < letter:
         if pos == length or pos == before:
             added = -1
@@ -28,6 +30,7 @@ while added == 0:
             befor = pos
             pos = (length-(pos+1))//2
             temp = array[pos]
+}
 if added == -1:
     array.insert(pos,letter)
     print('add node')
