@@ -11,6 +11,24 @@ Tree createNode(char letter){
   return node;
 }
 
+Tree createHuffmanNode(Tree min, Tree min2){
+  Tree node = (Node*)malloc(sizeof(Node));
+  node->occurence = min->occurence + min2->occurence;
+  node->letter = '\0';
+  node->left = min;
+  node->right = min2;
+  return node;
+}
+
+void displayHuffman(Tree tree){
+  if (tree != NULL){
+    if(tree->letter != '\0')
+      printf("%d %c | ",tree->occurence,tree->letter);
+      displayHuffman(tree->left);
+      displayHuffman(tree->right);
+  }
+}
+
 Node** insert(Node** array,int length,char letter,int pos){
   Node** inserted = (Node**)malloc(sizeof(Node*)*(length+1));
   Node* NodeLetter = createNode(letter);

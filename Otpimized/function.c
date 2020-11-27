@@ -1,7 +1,8 @@
-#include "headers/function.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "headers/function.h"
 
+/*
 int nCharInFile(char* path){
   FILE *file;
   file = fopen(path,"r");
@@ -13,7 +14,7 @@ int nCharInFile(char* path){
   }
   printf("%d\n",number);
   return number;
-}
+}*/
 
 void display(Node** array,int length){
   for(int i = 0;i<length;i++){
@@ -59,8 +60,7 @@ void array_merge_sort(Node** array, int first, int last){
     }
 }
 
-
-Node** letterOccurrences(char* path){
+Node** letterOccurrences(char* path,int* length){
   //here list is a degenerate tree
   FILE *file = fopen(path,"r");
   char letter = getc(file);
@@ -68,9 +68,8 @@ Node** letterOccurrences(char* path){
   Node** array = (Node**)malloc(sizeof(Node*));
   array[0] = node;
   array[0]->occurence--;
-  int length = 1;
   while (letter != EOF){
-    int right = length-1;
+    int right = (*length)-1;
     int left = 0;
     int pos;
     char temp;
@@ -101,7 +100,7 @@ Node** letterOccurrences(char* path){
               }
           }
         else if(temp < letter){ // we go to the right
-            if (pos == length-1){
+            if (pos == (*length)-1){
               pos++;
               added = -1;
             }
@@ -115,8 +114,8 @@ Node** letterOccurrences(char* path){
           }
     }
     if (pos != -1){
-        array = insert(array,length,letter,pos);
-        length++;
+        array = insert(array,*length,letter,pos);
+        (*length)++;
     }
     letter = fgetc(file);
     /*if (buffer == EOF){
@@ -124,8 +123,62 @@ Node** letterOccurrences(char* path){
     }*/
   }
   printf("\n");
-  display(array,length);
-  array_merge_sort(array,0,length-1);
-  display(array,length);
   return array;
+}
+
+// we create two sorted queues q1 and q2, q1 is the first Node of the q1 queue and q1* the second one.
+// we want to give to the function createHuffman the two mins of the values q1, q1*, q2, q2*, the only possibilities are giving, in order : q1q2, q1q1',q2q2',q2q1
+Tree createHuffman(Tree* array, int len){
+  Queue* q1 = create_queue();  //contains all the nodes from the array
+  Queue* q2 = create_queue();  //storage for when we create a new node
+  Node* NodeUsed[2];
+  Node* huffman;
+  for(int i = 0; i<len ; i++) //filling q1
+  {
+    enqueue(&q1, array[i]);
+  }
+
+  while(!is_empty(q1) || !is_empty(q2))
+  {
+    printf("queue2 %d\n",is_empty(q2));
+      if(!is_empty(q1) && (is_empty(q2) || unqueue(&q1,0)->occurence < unqueue(&q2,0)->occurence))
+      {
+        printf("case q1");
+        NodeUsed[0] = unqueue(&q1,1);
+        //case q1q1*
+        if ((!is_empty(q1)) && (is_empty(q2) || unqueue(&q1,0)->occurence < unqueue(&q2,0)->occurence)){   //is_empty(q1) would mean we've just removed the last value of q1
+          NodeUsed[1] = unqueue(&q1,1);
+          printf("q1*\n");
+        }
+        //case q1q2
+        else{
+          NodeUsed[1] = unqueue (&q2,1);
+          printf("q2\n");
+        }
+      }
+      //else if (is_empty(q1) || unqueue(&q2,0)->occurence < unqueue(&q1,0)->occurence)
+      else
+      {
+        printf("case q2");
+        NodeUsed[0] = unqueue(&q2,1);
+        //case q2q2*
+        if ((!is_empty(q2)) && (is_empty(q1) || unqueue(&q2,0)->occurence < unqueue(&q1,0)->occurence)){   //is_empty(q2) would mean we've just removed the last value of q2
+            NodeUsed[1] = unqueue(&q2,1);
+            printf("q2*\n");
+        }
+        //case q2q1
+        else{
+          NodeUsed[1] = unqueue(&q1,1);
+          printf("q1\n");
+        }
+      }
+    huffman = createHuffmanNode(NodeUsed[0],NodeUsed[1]); //creates the parent of these two nodes, with letter '\0' and occ node 1 + node 2
+    displayHuffman(huffman);
+    printf("\n");
+    if(!is_empty(q1) || !is_empty(q2)){
+      printf("enqueue q2\n");
+      enqueue(&q2,huffman);
+    }
+  }
+  return huffman;
 }
