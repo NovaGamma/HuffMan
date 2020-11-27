@@ -102,6 +102,43 @@ Node** insert(Node** array,int length,char letter,int pos){
   return inserted;
 }
 
+void array_merge(Node** array, int first, int medium, int last){
+    int size1 = medium - first + 1;
+    int size2 = last - medium;
+    Node* array1[size1];
+    Node* array2[size2];
+    int i;
+    for(i = 0 ; i < size1 ; i++){
+        array1[i] = array[i + first];
+    }
+    for(i = 0 ; i < size2 ; i++){
+        array2[i] = array[i + size1 + first];
+    }
+    i = 0;
+    int j = 0;
+    int k = first;
+    while(k < last + 1){
+        if(i < size1 && (j >= size2 || array1[i]->occurence <= array2[j]->occurence)){
+            array[k] = array1[i];
+            i++;
+        }
+        else{
+            array[k] = array2[j];
+            j++;
+        }
+        k++;
+    }
+}
+
+void array_merge_sort(Node** array, int first, int last){
+    if(first < last){
+        int medium = first + (last-first)/2;
+        array_merge_sort(array, first, medium);
+        array_merge_sort(array, medium+1, last);
+        array_merge(array, first, medium, last);
+    }
+}
+
 Node** letterOccurrences(char* path){
   //here list is a degenerate tree
   FILE *file = fopen(path,"r");
@@ -170,6 +207,9 @@ Node** letterOccurrences(char* path){
     }*/
   }
   printf("\n");
+  display(array,length);
+  array_merge_sort(array,0,length-1);
+  display(array,length);
   return array;
 }
 
@@ -255,7 +295,6 @@ int main(){
   nCharInFile(path);
   char path2[] = "output.txt";
   Node** tree = letterOccurrences(path);
-  //displayList(tree);
   //printf("\n");
   /*createHuffman(&tree);
   //displayHuffman(tree);
