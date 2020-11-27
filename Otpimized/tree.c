@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "tree.h"
+#include "headers/tree.h"
 
 Tree createNode(char letter){
   Tree node = (Node*)malloc(sizeof(Node));

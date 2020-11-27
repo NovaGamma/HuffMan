@@ -1,4 +1,4 @@
-#include "function.h"
+#include "headers/function.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -70,7 +70,6 @@ Node** letterOccurrences(char* path){
   array[0]->occurence--;
   int length = 1;
   while (letter != EOF){
-    printf("%c %d\n",letter,letter);
     int right = length-1;
     int left = 0;
     int pos;
@@ -81,7 +80,6 @@ Node** letterOccurrences(char* path){
         pos = (left + right)/2;
         temp = array[pos]->letter;
         if (temp == letter){
-          printf("add occurence odd\n");
           array[pos]->occurence++;
           added = 1;
           pos = -1;
@@ -117,11 +115,9 @@ Node** letterOccurrences(char* path){
           }
     }
     if (pos != -1){
-        printf("Add node for letter : %c at pos : %d\n",letter,pos);
         array = insert(array,length,letter,pos);
         length++;
     }
-    display(array,length);
     letter = fgetc(file);
     /*if (buffer == EOF){
       printf("\nBonjour Antoine\n");

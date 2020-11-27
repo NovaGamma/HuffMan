@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "function.h"
+#include "headers/function.h"
 
 int main(){
   char path[] = "input.txt";
