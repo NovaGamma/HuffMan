@@ -17,14 +17,8 @@ Tree createHuffmanNode(Tree min, Tree min2){
   Tree node = (Node*)malloc(sizeof(Node));
   node->occurence = min->occurence + min2->occurence;
   node->letter = '\0';
-  if(min->letter == min2->letter && getDepth(min) > getDepth(min2)){
-    node->left = min2;
-    node->right = min;
-  }
-  else{
-    node->left = min;
-    node->right = min2;
-  }
+  node->left = min2;
+  node->right = min;
   return node;
 }
 
