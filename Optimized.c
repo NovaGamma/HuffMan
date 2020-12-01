@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "tree.c"
-
 
 void text2binaryFile(){
   FILE *input;
@@ -67,17 +67,11 @@ void removeFromTreeList(Tree* list, Tree node){
 
 void createHuffman(Tree* occurence){
   while (nElement(*occurence) > 1){
-    displayList(*occurence);
-    printf("\n");
     Tree min = getMinOccurrences(*occurence);//sending the address of the tree because the min will be removed
     removeFromTreeList(occurence,min);
     Tree min2 = getMinOccurrences(*occurence);
     removeFromTreeList(occurence,min2);
-    displayList(*occurence);
-    printf("\n");
-    printf("%d\n",min->occurence + min2->occurence);
     Tree huffman = createHuffmanNode(min,min2);
-    printf("occ %d\n",huffman->occurence);
     add2TreeList(occurence,huffman);
   }
 }
@@ -153,25 +147,28 @@ void text2compressedFile(){
     fclose(dic);
 }
 
-void get_path(Tree tree, char isRightChild, char *path, int path_length){
+void get_path(Tree tree, char* isRightChild, char* path, int path_length){
 
     if (tree != NULL )
     {
-        if (isRightChild != 2)   //it would mean we're at the root
-            *(path + path_length - 1) = isRightChild; //is this node at the left or right of the previous one? //-1 since we didn'tree take the root
-
+        if (isRightChild != "\0"){   //it would mean we're not at the root
+          char* temp = (char*)malloc(sizeof(char)*(path_length + 1));
+          strcpy(temp,path);
+          strcat(temp,isRightChild);
+          path = temp;
+        }
         if (tree->right == NULL && tree->left == NULL) //if leaf
         {
             FILE* dico = fopen("dico.txt","a+"); //adding at the end of the file
-            fprintf(dico,"%c%s", tree->letter,path);
-            printf("%c%s", tree->letter,path);  //(just to check)
-            *path = '\0';  //reinitializing path
+            fprintf(dico,"%c : %s\n", tree->letter,path);
+            //printf("%c%s\n", tree->letter,path);  //(just to check)
             fclose(dico);
+            free(path);
         }
 
         else {
-            get_path(tree->left, 0, path, path_length + 1);
-            get_path(tree->right, 1, path, path_length + 1);
+            get_path(tree->left, "0", path, path_length + 1);
+            get_path(tree->right, "1", path, path_length + 1);
         }
     }
     else
@@ -180,8 +177,10 @@ void get_path(Tree tree, char isRightChild, char *path, int path_length){
 
 void createDico(Node* t)
 {
-    char path[20];
-    get_path(t,2,path,0);
+  char* path = "\0";
+  FILE* dico = fopen("dico.txt","w");
+  fclose(dico);//opening and closing the file in write mode to remove previous writing
+  get_path(t,"\0",path,0);
 }
 
 int main(){
@@ -195,7 +194,8 @@ int main(){
   createHuffman(&tree);
   //displayHuffman(tree);
   createDico(tree);
-  //text2compressedFile();
-  //nCharInFile(path2);
+  text2compressedFile();
+  nCharInFile("binary.txt");
+  nCharInFile(path2);
   return 0;
 }
