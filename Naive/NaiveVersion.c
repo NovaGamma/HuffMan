@@ -189,6 +189,7 @@ int main(){
   char path2[] = "output.txt";
   Tree tree = letterOccurrences(path);
   createHuffman(&tree);
+  displayHuffman(tree);
   createDico(tree);
   text2compressedFile();
   nCharInFile("binary.txt");

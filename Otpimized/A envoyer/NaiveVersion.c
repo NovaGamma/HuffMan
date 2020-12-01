@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "tree.c"
+#include "queue.c"
 
 void text2binaryFile(){
   FILE *input;
@@ -199,3 +200,5 @@ int main(){
   nCharInFile(path2);
   return 0;
 }
+
+//K) ⭐⭐⭐: Write a function which, using two queues, creates the Huffman tree from an array of nodes sorted by occurrences.
