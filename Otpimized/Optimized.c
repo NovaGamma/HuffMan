@@ -11,7 +11,7 @@ int main(){
   array_merge_sort(array,0,length-1);
   display(array,length-1);
   Tree huffman = createHuffman(array,length-1);
-  printf("Bonjour Antoine !\n");
   displayHuffman(huffman);
+  TreeDic* dico =  Huffman_Into_Avl_Wrapper(huffman);
   return 0;
 }

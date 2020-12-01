@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "headers/tree.h"
 
 Tree createNode(char letter){

@@ -140,43 +140,33 @@ Tree createHuffman(Tree* array, int len){
 
   while(!is_empty(q1) || !is_empty(q2))
   {
-    printf("queue2 %d\n",is_empty(q2));
       if(!is_empty(q1) && (is_empty(q2) || unqueue(&q1,0)->occurence < unqueue(&q2,0)->occurence))
       {
-        printf("case q1");
         NodeUsed[0] = unqueue(&q1,1);
         //case q1q1*
         if ((!is_empty(q1)) && (is_empty(q2) || unqueue(&q1,0)->occurence < unqueue(&q2,0)->occurence)){   //is_empty(q1) would mean we've just removed the last value of q1
           NodeUsed[1] = unqueue(&q1,1);
-          printf("q1*\n");
         }
         //case q1q2
         else{
           NodeUsed[1] = unqueue (&q2,1);
-          printf("q2\n");
         }
       }
       //else if (is_empty(q1) || unqueue(&q2,0)->occurence < unqueue(&q1,0)->occurence)
       else
       {
-        printf("case q2");
         NodeUsed[0] = unqueue(&q2,1);
         //case q2q2*
         if ((!is_empty(q2)) && (is_empty(q1) || unqueue(&q2,0)->occurence < unqueue(&q1,0)->occurence)){   //is_empty(q2) would mean we've just removed the last value of q2
             NodeUsed[1] = unqueue(&q2,1);
-            printf("q2*\n");
         }
         //case q2q1
         else{
           NodeUsed[1] = unqueue(&q1,1);
-          printf("q1\n");
         }
       }
     huffman = createHuffmanNode(NodeUsed[0],NodeUsed[1]); //creates the parent of these two nodes, with letter '\0' and occ node 1 + node 2
-    displayHuffman(huffman);
-    printf("\n");
     if(!is_empty(q1) || !is_empty(q2)){
-      printf("enqueue q2\n");
       enqueue(&q2,huffman);
     }
   }
