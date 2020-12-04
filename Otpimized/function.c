@@ -172,3 +172,15 @@ Tree createHuffman(Tree* array, int len){
   }
   return huffman;
 }
+
+void compressText(char* path,TreeDic dico){
+  FILE *input = fopen(path,"r");
+  FILE *output = fopen("output.txt","w");
+  char letter = getc(input);
+  while(letter != EOF){
+    char* code = getCode(dico,letter);
+    fprintf(output,"%s",code);
+    letter = getc(input);
+  }
+  fclose(input);
+}

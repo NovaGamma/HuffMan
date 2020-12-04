@@ -13,5 +13,6 @@ int main(){
   Tree huffman = createHuffman(array,length-1);
   displayHuffman(huffman);
   TreeDic* dico =  Huffman_Into_Avl_Wrapper(huffman);
+  compressText(path,*dico);
   return 0;
 }

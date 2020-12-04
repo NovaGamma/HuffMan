@@ -33,4 +33,5 @@ void Balance_Dic(NodeDic** tree);
 void add_node_AVL_Dic(NodeDic** tree, char letter, char* code, int codeLgt);
 TreeDic* Huffman_Into_Avl_Wrapper(Tree tree);
 void Huffman_Into_Avl(Tree treeHuff, TreeDic* treeAvl, char lastPath, char* path, int pathLgt);
+char* getCode(TreeDic dico, char letter);
 #endif

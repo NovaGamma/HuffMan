@@ -169,3 +169,18 @@ void Huffman_Into_Avl(Tree treeHuff, TreeDic* treeAvl, char lastPath, char* path
         Huffman_Into_Avl(treeHuff->right, treeAvl, '1', path, pathLgt);
     }
 }
+
+char* getCode(TreeDic dico, char letter){
+  if(dico != NULL){
+    if(dico->letter == letter)
+    {
+      return dico->code;
+    }
+    else if(dico->letter > letter){
+      return getCode(dico->left,letter);
+    }
+    else{
+      return getCode(dico->right,letter);
+    }
+  }
+}
