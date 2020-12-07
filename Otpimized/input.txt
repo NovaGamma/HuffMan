@@ -1,1 +1,72 @@
-Alice was sitting on the vault and was waiting with her sister.
+Alice was sitting on the vault and was waiting with her sister.Software quality come from software engineering and can be divided in two notions:
+Respectively the functional quality and the structural quality
+The functional quality describes the quality of the product compared to the requirement. It can also be used to compare different software doing the same jib.
+
+The structural quality doesn’t come from how the software fulfill the requirement but more at how well it is built, how well it resists (few bugs) and how easy it is to maintain it.
+
+Software quality can be measured with 5 factors being : 
+-	Reliability 
+-	security
+-	efficiency
+-	maintainability 
+-	size
+It can be measured via testing, but it is mainly for the functional software quality
+To measure the reliability of the software, we will check a vast list of best practices and attributes such as Coding Practices, the complexity of the algorithms, the error or exception handling ect…
+
+Software architecture
+Software architecture is, as it is easily understandable with the name, something that refers to the structure of a software. It is also the name of the way of making structures and systems in software engineering. 
+The architecture of a software is something that when implemented is really difficult to change and is thus very costly to change, so it has to be decided early in the production with all the constraint that it can cause in mind. TO be sure that the right architecture is chosen.
+
+The different types of structure must be well documented to allow the stakeholders to choose the right one.
+The characteristics of the architecture are:
+-	That there is a multitude of stakeholders
+-	There is a separation of concerns because of the multitude of stakeholders
+-	There is recurring styles, because of the standard ways that are used in the domain
+Software architecture give a basis to do analysis of the software system behavior before the system has been developed. It allows the re-use of elements. It facilitates the communication with the stakeholders and provide a system that fulfills their needs.
+
+
+Antipattern
+In software engineering, antipatterns are common mistakes that occur when making softwares. The name come from the wrong uses of design patterns.
+These antipattern usually cause a decreasing speed of execution, an augmentation of the creation costs or maintenance costs or bugs.
+There exists several of these antipattern that will be explained latter.
+
+Reinventing the wheel / square wheel
+The first of the antipattern that will be explained here. It consists in the fact of recreating an existing functionality, but it can be necessary when there is no library that provides this functionality. But it can lead to reinventing the square wheel which is a derivative of this that occur when by recreating the functionality, the result produced is worse than the already existing ones.
+Duplicate Code
+Duplicate code is also an antipattern that is characterized by the fact of reusing some pieces of code that are similar while not putting them as a function or in a module.
+It originated from copy-pasting  or when we copy a piece of code because it works.
+Copy and paste programing
+Copy-and-paste programming is the fact of copy-pasting code, producing repetitive code. It’s often views as a bad practice, but it can be necessary because of technical limitations.
+It is often used by inexperienced programmers that don’t have the capacity of creating their own code from scratch and thus copy-paste code found on internet.
+
+Test-driven development
+Test-driven development is a software development process that rely on software requirement to be converted in test unit before being fully developed. It’s opposed of the fact of creating the software first and then the tests.
+It follows a sequence :
+-	Add a test
+-	Run all test to see if the new test works
+-	Write the corresponding code
+-	Re-run the tests
+-	Refactor the code
+Cppcheck
+Cppcheck is a static code analysis tool used for C and C++.
+It takes cares of a large variety of static verifications that aren’t done by the compilator. It checks the variables, the size of the arrays to avoid an overflow. The verification of classes, functions unused, memory leaks, data leak, non-valid uses of functions of basics libraries.
+Code Smell
+A code smell in programming is any characteristic of a code that indicates a deeper problem. The determination of it is subjective and may vary depending of the language, developer or the method of development.
+
+Snippet
+Snipeet is a programming term used to talk about small parts of code that are reused. It’s implemented in IDE to avoid the user to rewrite the same thing again and again. It can be linked to copy and paste programming. They are only used for small and simple sections or code, because they cannot always be modified. They can be static, only text, or dynamic, or even scriptable.
+Regression testing
+Regression testing is the fact of retesting to check if all of the previous functions still works after integrating a new one. If it does not work, it’s called regression and we have to do bug fixes.
+Extreme Programming
+Extreme Programming a method of development which has for aim to improve the software quality? It’s a type of Agile development. It works using frequent releases with short development cycles. To improve the productivity and responsiveness. Some of its elements are programming in pairs, doing extensive reviews, unit testing of all code etc...
+It’s abbreviated in XP
+Code refactoring
+The code refactoring is the process of restructuring an existing code, without changing the external behaviour of the program. The aim is either to improve the readability or the complexity of the program to allow easier maintenance and faster execution. It can also allow the program to be extended more easily.
+
+Design by contract
+Design by contract is link to the design of a software. It says that the designers should define precise and verifiable specification for components. It works using two sides, the client and the supplier, the supplier will provide a given product while the client must use the product, but the product is useful in a way. It can be found in programming with the inheritance in object programming or classes.
+
+Memory Leak
+A memory leak is something that appear when a program doesn’t manage memory allocations properly and some memory isn’t freed while the associated object isn’t used anymore. It can increase if a function create variable dynamically allocated and they are never freed, as time goes on more memory is used which can cause problem on hardware with very few memory. But depending on the language there exist a trash collector that will avoid this problem, where memory is freed automatically when an object is discarded but the memory wasn’t freed.
+
+

@@ -2,20 +2,6 @@
 #include <stdlib.h>
 #include "headers/function.h"
 
-/*
-int nCharInFile(char* path){
-  FILE *file;
-  file = fopen(path,"r");
-  char buffer = getc(file);
-  int number = 0;
-  while (buffer != EOF){
-    number++;
-    buffer = getc(file);
-  }
-  printf("%d\n",number);
-  return number;
-}*/
-
 void display(Node** array,int length){
   for(int i = 0;i<length;i++){
     printf("%c %d / ",array[i]->letter,array[i]->occurence);
@@ -133,7 +119,7 @@ Tree createHuffman(Tree* array, int len){
   Queue* q2 = create_queue();  //storage for when we create a new node
   Node* NodeUsed[2];
   Node* huffman;
-  for(int i = 0; i<len ; i++) //filling q1
+  for(int i = 0; i<=len ; i++) //filling q1
   {
     enqueue(&q1, array[i]);
   }
@@ -183,4 +169,5 @@ void compressText(char* path,TreeDic dico){
     letter = getc(input);
   }
   fclose(input);
+  fclose(output);
 }
