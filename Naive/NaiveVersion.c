@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "tree.c"
+#include <time.h>
 
 void text2binaryFile(){
   FILE *input;
@@ -32,7 +33,7 @@ int nCharInFile(char* path){
     number++;
     buffer = getc(file);
   }
-  printf("%d\n",number);
+  //printf("%d\n",number);
   return number;
 }
 
@@ -102,7 +103,7 @@ Node* letterOccurrences(char* path){
       printf("\nBonjour Antoine\n");
     }*/
   }
-  printf("\n");
+  //printf("\n");
   return list;
 }
 
@@ -183,16 +184,20 @@ void createDico(Node* t)
 }
 
 int main(){
+  clock_t begin = clock();
   text2binaryFile();
   char path[] = "input.txt";
   nCharInFile(path);
   char path2[] = "output.txt";
   Tree tree = letterOccurrences(path);
   createHuffman(&tree);
-  displayHuffman(tree);
+  //displayHuffman(tree);
   createDico(tree);
   text2compressedFile();
   nCharInFile("binary.txt");
   nCharInFile(path2);
+  printf("Compression done.");
+  clock_t end = clock();
+  printf("Time needed = %f\n s.",(double)(end - begin) / CLOCKS_PER_SEC);
   return 0;
 }
