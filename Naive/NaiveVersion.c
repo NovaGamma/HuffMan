@@ -191,6 +191,6 @@ int main(){
   nCharInFile(path2);
   printf("Compression done.");
   clock_t end = clock();
-  printf("Time needed = %f\n s.",(double)(end - begin) / CLOCKS_PER_SEC);
+  printf("Time needed = %f s.\n",(double)(end - begin) / CLOCKS_PER_SEC);
   return 0;
 }
