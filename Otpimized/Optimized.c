@@ -56,6 +56,6 @@ int main(){
             default:
                 select = 0;
         }
-    } while(select != 0);
+    } while(select == 0);
   return 0;
 }
