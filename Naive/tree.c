@@ -22,35 +22,6 @@ Tree createHuffmanNode(Tree min, Tree min2){
   return node;
 }
 
-void displayTree(Tree tree){//display in postfix order
-  if(tree != NULL){
-    displayTree(tree->left);
-    displayTree(tree->right);
-    printf("%c %d\n",tree->letter,tree->occurence);
-  }
-}
-
-void displayList(Tree tree){
-  if(tree != NULL){
-    if(tree->letter == '\0'){
-      printf("0_%d->",tree->occurence);
-    }
-    else{
-    printf("%c_%d->",tree->letter,tree->occurence);
-    }
-    displayList(tree->next);
-  }
-}
-
-void displayHuffman(Tree tree){
-  if (tree != NULL){
-    if(tree->letter != '\0')
-      printf("%d\n",tree->occurence);
-      displayHuffman(tree->left);
-      displayHuffman(tree->right);
-  }
-}
-
 int nElement(Tree tree){
   if(tree != NULL){
     return 1 + nElement(tree->next);
