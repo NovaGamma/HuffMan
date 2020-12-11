@@ -164,6 +164,7 @@ void compressText(char* path,TreeDic dico){
   FILE *output = fopen("output.txt","w");
 
   printDic(dico, output);
+  fprintf(output, "%c", '\0');
 
   char letter = getc(input);
   while(letter != EOF){
@@ -176,9 +177,59 @@ void compressText(char* path,TreeDic dico){
 }
 
 void printDic(TreeDic dic, FILE* output){
-    if(dic!=NULL){
-        fprintf(output, "%c%s", dic->letter, dic->code);
+    if (dic!=NULL){
+        fprintf(output, "%s%c", dic->code, dic->letter);
         printDic(dic->left, output);
         printDic(dic->right, output);
+    }
+}
+
+Tree create_Huffman_from_dic(FILE* input) {
+    Tree treeHuff = createNode('\0');
+    create_Huffman_from_dic_util(input, treeHuff);
+
+    return treeHuff;
+}
+
+void create_Huffman_from_dic_util(FILE* input, Tree tree) {
+    char buff = fgetc(input);
+    Tree buffTree = tree;
+    while (buff != '\0') {
+        switch (buff) {
+            case '1':
+                if (buffTree->right == NULL) {
+                    buffTree->right = createNode('\0');
+                }
+                buffTree = buffTree->right;
+                break;
+            case '0':
+                if (buffTree->left == NULL) {
+                    buffTree->left = createNode('\0');
+                }
+                buffTree = buffTree->left;
+                break;
+            default:
+                buffTree->letter = buff;
+                return(create_Huffman_from_dic_util(input, tree));
+        }
+        buff = fgetc(input);
+    }
+}
+
+void decompress(Tree huffman, FILE* input, FILE* output) {
+    Tree buffTree = huffman;
+    char buffChar = fgetc(input);
+    while (buffChar != EOF) {
+        while (buffTree->letter == '\0') {
+            if (buffChar == '1') {
+                buffTree = buffTree->right;
+            }
+            else {
+                buffTree = buffTree->left;
+            }
+            buffChar = fgetc(input);
+        }
+        fprintf(output, "%c", buffTree->letter);
+        buffTree = huffman;
     }
 }
