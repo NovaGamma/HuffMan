@@ -9,6 +9,9 @@ void compression(){
     char path[] = "input.txt";
     int length = 1;
     Node** array = letterOccurrences(path,&length);
+    if (array == NULL) {
+        return;
+    }
     array_merge_sort(array,0,length-1);
     Tree huffman = createHuffman(array,length-1);
     TreeDic* dico =  Huffman_Into_Avl_Wrapper(huffman);
@@ -22,6 +25,10 @@ void decompression(){
     clock_t begin = clock();
     // we open the input file here to prevent going through the dictionary twice
     FILE* input = fopen("output.txt", "r");
+    if (file == NULL) {
+      printf("ERREUR\nFICHIER \"output.txt\" NON TROUVE\n");
+      return;
+    }
     FILE* output = fopen("decompressed.txt", "w");
     Tree huffman = create_Huffman_from_dic(input);
     decompress(huffman, input, output);
