@@ -9,6 +9,27 @@ void display(Node** array,int length){
   printf("\n");
 }
 
+int nCharInFile(char* path){
+  FILE *file;
+  file = fopen(path,"r");
+  char buffer = getc(file);
+  int number = 0;
+  while (buffer != EOF){
+    number++;
+    buffer = getc(file);
+  }
+  return number;
+}
+
+int compressionRate(char* path){
+  char path2[] = "output.txt";
+  int rate;
+  float nCharInput = (float)nCharInFile(path)*8;
+  float nCharOutput = (float)nCharInFile(path2);
+  rate = (int)(nCharOutput / nCharInput * 100);
+  return rate;
+}
+
 void array_merge(Node** array, int first, int medium, int last){
     int size1 = medium - first + 1;
     int size2 = last - medium;

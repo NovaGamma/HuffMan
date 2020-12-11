@@ -19,6 +19,7 @@ void compression(){
     clock_t end = clock();
     printf("Compression done !\n");
     printf("Time needed = %f\n",(double)(end - begin) / CLOCKS_PER_SEC);
+    printf("Compression rate : %d %%\n",compressionRate(path));
 }
 
 void decompression(){
