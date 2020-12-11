@@ -2,13 +2,6 @@
 #include <stdlib.h>
 #include "headers/function.h"
 
-void display(Node** array,int length){
-  for(int i = 0;i<length;i++){
-    printf("%c %d / ",array[i]->letter,array[i]->occurence);
-  }
-  printf("\n");
-}
-
 int nCharInFile(char* path){
   FILE *file;
   file = fopen(path,"r");

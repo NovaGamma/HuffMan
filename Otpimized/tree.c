@@ -21,16 +21,6 @@ Tree createHuffmanNode(Tree min, Tree min2){
   return node;
 }
 
-void displayHuffman(Tree tree){
-  if (tree != NULL){
-    if(tree->letter != '\0'){
-      printf("%d %c | ",tree->occurence,tree->letter);
-      displayHuffman(tree->left);
-      displayHuffman(tree->right);
-    }
-  }
-}
-
 Node** insert(Node** array,int length,char letter,int pos){
   Node** inserted = (Node**)malloc(sizeof(Node*)*(length+1));
   Node* NodeLetter = createNode(letter);
