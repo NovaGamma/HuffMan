@@ -26,7 +26,7 @@ void decompression(){
     // we open the input file here to prevent going through the dictionary twice
     FILE* input = fopen("output.txt", "r");
     if (input == NULL) {
-      printf("ERREUR\nFICHIER \"output.txt\" NON TROUVE\n");
+      printf("ERROR\nFILE \"output.txt\" NOT FOUND\n");
       return;
     }
     FILE* output = fopen("decompressed.txt", "w");
