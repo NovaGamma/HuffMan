@@ -25,7 +25,7 @@ void decompression(){
     clock_t begin = clock();
     // we open the input file here to prevent going through the dictionary twice
     FILE* input = fopen("output.txt", "r");
-    if (file == NULL) {
+    if (input == NULL) {
       printf("ERREUR\nFICHIER \"output.txt\" NON TROUVE\n");
       return;
     }
