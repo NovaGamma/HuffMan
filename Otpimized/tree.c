@@ -23,10 +23,11 @@ Tree createHuffmanNode(Tree min, Tree min2){
 
 void displayHuffman(Tree tree){
   if (tree != NULL){
-    if(tree->letter != '\0')
+    if(tree->letter != '\0'){
       printf("%d %c | ",tree->occurence,tree->letter);
       displayHuffman(tree->left);
       displayHuffman(tree->right);
+    }
   }
 }
 
@@ -183,4 +184,5 @@ char* getCode(TreeDic dico, char letter){
       return getCode(dico->right,letter);
     }
   }
+  return NULL;
 }
