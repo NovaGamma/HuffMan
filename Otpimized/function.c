@@ -49,6 +49,10 @@ void array_merge_sort(Node** array, int first, int last){
 Node** letterOccurrences(char* path,int* length){
   //here list is a degenerate tree
   FILE *file = fopen(path,"r");
+  if (file == NULL) {
+    printf("ERREUR\nFICHIER \"input.txt\" NON TROUVE\n");
+    return NULL;
+  }
   char letter = getc(file);
   Node* node = createNode(letter);
   Node** array = (Node**)malloc(sizeof(Node*));
