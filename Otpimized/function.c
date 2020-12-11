@@ -64,7 +64,7 @@ Node** letterOccurrences(char* path,int* length){
   //here list is a degenerate tree
   FILE *file = fopen(path,"r");
   if (file == NULL) {
-    printf("ERREUR\nFICHIER \"input.txt\" NON TROUVE\n");
+    printf("ERROR\nFILE \"input.txt\" NOT FOUND\n");
     return NULL;
   }
   char letter = getc(file);
@@ -130,18 +130,19 @@ Node** letterOccurrences(char* path,int* length){
   return array;
 }
 
-// we create two sorted queues q1 and q2, q1 is the first Node of the q1 queue and q1* the second one.
-// we want to give to the function createHuffman the two mins of the values q1, q1*, q2, q2*, the only possibilities are giving, in order : q1q2, q1q1',q2q2',q2q1
+//q1 is the first Node of the q1 queue and q1* the second one.
+// we want the two mins of the values q1, q1*, q2, q2*, we can give, in order, q1q2, q1q1',q2q2',q2q1
 Tree createHuffman(Tree* array, int len){
   Queue* q1 = create_queue();  //contains all the nodes from the array
   Queue* q2 = create_queue();  //storage for when we create a new node
   Node* NodeUsed[2];
   Node* huffman;
-  for(int i = 0; i<=len ; i++) //filling q1
+  //filling q1
+  for(int i = 0; i<=len ; i++)
   {
     enqueue(&q1, array[i]);
   }
-
+  //looking for the values to give to NodeUsed[]
   while(!is_empty(q1) || !is_empty(q2))
   {
       if(!is_empty(q1) && (is_empty(q2) || unqueue(&q1,0)->occurence < unqueue(&q2,0)->occurence))
@@ -156,7 +157,6 @@ Tree createHuffman(Tree* array, int len){
           NodeUsed[1] = unqueue (&q2,1);
         }
       }
-      //else if (is_empty(q1) || unqueue(&q2,0)->occurence < unqueue(&q1,0)->occurence)
       else
       {
         NodeUsed[0] = unqueue(&q2,1);
