@@ -162,6 +162,9 @@ Tree createHuffman(Tree* array, int len){
 void compressText(char* path,TreeDic dico){
   FILE *input = fopen(path,"r");
   FILE *output = fopen("output.txt","w");
+
+  printDic(dico, output);
+
   char letter = getc(input);
   while(letter != EOF){
     char* code = getCode(dico,letter);
@@ -170,4 +173,12 @@ void compressText(char* path,TreeDic dico){
   }
   fclose(input);
   fclose(output);
+}
+
+void printDic(TreeDic dic, FILE* output){
+    if(dic!=NULL){
+        fprintf(output, "%c%s", dic->letter, dic->code);
+        printDic(dic->left, output);
+        printDic(dic->right, output);
+    }
 }
